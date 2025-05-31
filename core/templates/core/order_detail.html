@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Order #{{ order.id }} - DeliverNow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0">Order #{{ order.id }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h5>Order Status</h5>
+                    <p class="badge bg-{{ order.status|yesno:'success,warning,danger' }}">{{ order.status|title }}</p>
+                </div>
+
+                <div class="mb-3">
+                    <h5>Restaurant</h5>
+                    <p>{{ order.restaurant.name }}</p>
+                </div>
+
+                <div class="mb-3">
+                    <h5>Food Items</h5>
+                    <ul class="list-group">
+                        {% for item in order.food_items.split %}
+                            <li class="list-group-item">{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mb-3">
+                    <h5>Delivery Address</h5>
+                    <p>{{ order.delivery_address }}</p>
+                </div>
+
+                <div class="mb-3">
+                    <h5>Total Amount</h5>
+                    <p>${{ order.total_amount }}</p>
+                </div>
+
+                {% if order.delivery_agent %}
+                    <div class="mb-3">
+                        <h5>Delivery Agent</h5>
+                        <p>{{ order.delivery_agent.user.get_full_name }}</p>
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <h5>Order Time</h5>
+                    <p>{{ order.created_at }}</p>
+                </div>
+
+                <a href="{% url 'my_orders' %}" class="btn btn-secondary">Back to My Orders</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

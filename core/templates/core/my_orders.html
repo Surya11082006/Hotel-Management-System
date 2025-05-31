@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block title %}My Orders - DeliverNow{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">My Orders</h2>
+        
+        {% if orders %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Restaurant</th>
+                            <th>Status</th>
+                            <th>Total Amount</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.id }}</td>
+                                <td>{{ order.restaurant.name }}</td>
+                                <td>
+                                    <span class="badge bg-{{ order.status|yesno:'success,warning,danger' }}">
+                                        {{ order.status|title }}
+                                    </span>
+                                </td>
+                                <td>${{ order.total_amount }}</td>
+                                <td>{{ order.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'order_detail' pk=order.pk %}" class="btn btn-sm btn-info">View Details</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>You haven't placed any orders yet.</p>
+            <a href="{% url 'home' %}" class="btn btn-primary">Browse Restaurants</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
